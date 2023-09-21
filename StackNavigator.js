@@ -3,11 +3,21 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeIcon } from "react-native-heroicons/outline";
-import { HomeIcon as HomeSolid } from "react-native-heroicons/solid";
+import {
+  HomeIcon,
+  MagnifyingGlassIcon as SearchOutline,
+  PencilSquareIcon,
+} from "react-native-heroicons/outline";
+import {
+  HomeIcon as HomeSolid,
+  MagnifyingGlassIcon as SearchSolid,
+  PencilSquareIcon as PencilSolid,
+} from "react-native-heroicons/solid";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import SearchScreen from "./screens/SearchScreen";
+import NewPostScreen from "./screens/NewPostScreen";
 
 export default function StackNavigator() {
   const Stack = createNativeStackNavigator();
@@ -26,7 +36,39 @@ export default function StackNavigator() {
             headerShown: false,
             title: "Home",
             tabBarIcon: ({ focused }) =>
-              focused ? <HomeSolid color={"black"} /> : <HomeIcon />,
+              focused ? (
+                <HomeSolid color={"black"} />
+              ) : (
+                <HomeIcon color={"black"} />
+              ),
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{
+            headerShown: false,
+            title: "Search",
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <SearchSolid color={"black"} />
+              ) : (
+                <SearchOutline color={"gray"} />
+              ),
+          }}
+        />
+        <Tab.Screen
+          name="Post"
+          component={NewPostScreen}
+          options={{
+            headerShown: false,
+            title: "New Thread",
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <PencilSolid color={"black"} />
+              ) : (
+                <PencilSquareIcon color={"gray"} />
+              ),
           }}
         />
       </Tab.Navigator>
