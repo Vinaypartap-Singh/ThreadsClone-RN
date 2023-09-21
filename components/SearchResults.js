@@ -43,6 +43,7 @@ export default function SearchResults() {
                 borderRadius: 10,
                 paddingVertical: 10,
                 paddingHorizontal: 30,
+                marginRight: 10,
               }}
             >
               <Text style={{ textAlign: "center" }}>Follow</Text>

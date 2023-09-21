@@ -7,17 +7,20 @@ import {
   HomeIcon,
   MagnifyingGlassIcon as SearchOutline,
   PencilSquareIcon,
+  HeartIcon,
 } from "react-native-heroicons/outline";
 import {
   HomeIcon as HomeSolid,
   MagnifyingGlassIcon as SearchSolid,
   PencilSquareIcon as PencilSolid,
+  HeartIcon as HeartSolid,
 } from "react-native-heroicons/solid";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import SearchScreen from "./screens/SearchScreen";
 import NewPostScreen from "./screens/NewPostScreen";
+import ActivityScreen from "./screens/ActivityScreen";
 
 export default function StackNavigator() {
   const Stack = createNativeStackNavigator();
@@ -68,6 +71,20 @@ export default function StackNavigator() {
                 <PencilSolid color={"black"} />
               ) : (
                 <PencilSquareIcon color={"gray"} />
+              ),
+          }}
+        />
+        <Tab.Screen
+          name="Activity"
+          component={ActivityScreen}
+          options={{
+            headerShown: false,
+            title: "Activtiy",
+            tabBarIcon: ({ focused }) =>
+              focused ? (
+                <HeartSolid color={"black"} />
+              ) : (
+                <HeartIcon color={"gray"} />
               ),
           }}
         />
