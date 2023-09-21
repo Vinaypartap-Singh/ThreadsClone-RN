@@ -3,11 +3,11 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "./components/LoginScreen";
-import RegisterScreen from "./components/RegisterScreen";
 import { HomeIcon } from "react-native-heroicons/outline";
 import { HomeIcon as HomeSolid } from "react-native-heroicons/solid";
-import HomeScreen from "./components/HomeScreen";
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 export default function StackNavigator() {
   const Stack = createNativeStackNavigator();
@@ -25,7 +25,6 @@ export default function StackNavigator() {
           options={{
             headerShown: false,
             title: "Home",
-
             tabBarIcon: ({ focused }) =>
               focused ? <HomeSolid color={"black"} /> : <HomeIcon />,
           }}
