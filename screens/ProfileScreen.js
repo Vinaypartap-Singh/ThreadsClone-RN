@@ -11,7 +11,6 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   LockClosedIcon,
-  Bars3BottomRightIcon,
   ArrowRightOnRectangleIcon,
 } from "react-native-heroicons/outline";
 import { AntDesign } from "@expo/vector-icons";
@@ -149,7 +148,9 @@ export default function ProfileScreen() {
                     }}
                   />
                 </View>
-                <Text style={{ fontWeight: 500 }}>8 followers</Text>
+                <Text style={{ fontWeight: 500 }}>
+                  {profileData.followers} followers
+                </Text>
               </View>
             </View>
             <View>
