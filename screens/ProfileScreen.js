@@ -24,6 +24,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const currentUser = auth.currentUser.uid;
   const [profileData, setProfileData] = useState(null);
+  console.log(profileData);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -96,7 +97,7 @@ export default function ProfileScreen() {
                 style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
               >
                 <Text style={{ fontWeight: 600, fontSize: 16 }}>
-                  vinay_._sandhu
+                  {profileData?.accountId}
                 </Text>
                 <TouchableOpacity
                   style={{
@@ -109,7 +110,7 @@ export default function ProfileScreen() {
                   <Text style={{ fontSize: 12 }}>threads.net</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={{ fontWeight: 600 }}>Expectation</Text>
+              <Text style={{ fontWeight: 600 }}>{profileData?.bio}</Text>
               <View
                 style={{
                   flexDirection: "row",
