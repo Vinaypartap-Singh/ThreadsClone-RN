@@ -24,6 +24,7 @@ import SearchScreen from "./screens/SearchScreen";
 import NewPostScreen from "./screens/NewPostScreen";
 import ActivityScreen from "./screens/ActivityScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import ProfileInformation from "./screens/ProfileInformation";
 
 export default function StackNavigator() {
   const Stack = createNativeStackNavigator();
@@ -45,7 +46,7 @@ export default function StackNavigator() {
               focused ? (
                 <HomeSolid color={"black"} />
               ) : (
-                <HomeIcon color={"black"} />
+                <HomeIcon color={"gray"} />
               ),
           }}
         />
@@ -111,7 +112,7 @@ export default function StackNavigator() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -125,6 +126,16 @@ export default function StackNavigator() {
         <Stack.Screen
           name="Main"
           component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ProfileSetup"
+          component={ProfileInformation}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
