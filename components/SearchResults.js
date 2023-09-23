@@ -1,58 +1,58 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
-export default function SearchResults() {
+export default function SearchResults({ data, searchInput, setSearchInput }) {
+  const isSearchMatch =
+    searchInput === "" ||
+    data.accountId.toLowerCase().includes(searchInput.toLowerCase()) ||
+    data.username.toLowerCase().includes(searchInput.toLowerCase());
+
+  if (!isSearchMatch) {
+    return null; // Don't render if it doesn't match the search criteria
+  }
+
   return (
-    <View style={{ marginTop: 35 }}>
-      <View style={{ flexDirection: "row", gap: 10 }}>
-        <View>
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3560&q=80",
-            }}
-            style={{
-              width: 70,
-              height: 70,
-              objectFit: "cover",
-              borderRadius: 100,
-            }}
-          />
+    <View style={{ marginTop: 35, flexDirection: "row", gap: 10 }}>
+      <Image
+        source={{ uri: data.profileImage }}
+        style={{
+          width: 70,
+          height: 70,
+          objectFit: "cover",
+          borderRadius: 100,
+        }}
+      />
+      <View
+        style={{
+          borderBottomWidth: 1,
+          paddingBottom: 14,
+          borderColor: "#ededed",
+          flexDirection: "row",
+          alignItems: "center",
+          width: "80%",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ gap: 3 }}>
+          <Text style={{ fontWeight: "600" }}>{data.accountId}</Text>
+          <Text style={{ fontWeight: "500", color: "#a3a3a3" }}>
+            {data.username}
+          </Text>
+          <Text style={{ fontWeight: "500" }}>{data.followers} followers</Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{
-            borderBottomWidth: 1,
-            paddingBottom: 14,
+            borderWidth: 1,
             borderColor: "#ededed",
-            flexDirection: "row",
-            alignItems: "center",
-            // backgroundColor: "red",
-            width: "80%",
-            justifyContent: "space-between",
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 30,
+            marginRight: 10,
           }}
         >
-          <View style={{ gap: 3 }}>
-            <Text style={{ fontWeight: 600 }}>mohanlal</Text>
-            <Text style={{ fontWeight: 500, color: "#a3a3a3" }}>MohanLal</Text>
-            <Text style={{ fontWeight: 500 }}>377K followers</Text>
-          </View>
-          <View>
-            <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                borderColor: "#ededed",
-                borderRadius: 10,
-                paddingVertical: 10,
-                paddingHorizontal: 30,
-                marginRight: 10,
-              }}
-            >
-              <Text style={{ textAlign: "center" }}>Follow</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+          <Text style={{ textAlign: "center" }}>Follow</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
