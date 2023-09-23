@@ -51,11 +51,11 @@ export default function NewPostScreen() {
               paddingVertical: 20,
             }}
           >
-            <Text style={{ fontSize: 18, fontWeight: 400 }}>
+            <Text style={{ fontSize: 16, fontWeight: 400 }}>
               Your followers can reply
             </Text>
             <TouchableOpacity>
-              <Text style={{ color: "blue", fontSize: 18, fontWeight: 600 }}>
+              <Text style={{ color: "blue", fontSize: 16, fontWeight: 600 }}>
                 Post
               </Text>
             </TouchableOpacity>
