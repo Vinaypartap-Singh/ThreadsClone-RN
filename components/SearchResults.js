@@ -3,12 +3,11 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 
 export default function SearchResults({ data, searchInput, setSearchInput }) {
   const isSearchMatch =
-    searchInput === "" ||
     data.accountId.toLowerCase().includes(searchInput.toLowerCase()) ||
     data.username.toLowerCase().includes(searchInput.toLowerCase());
 
   if (!isSearchMatch) {
-    return null; // Don't render if it doesn't match the search criteria
+    return null;
   }
 
   return (
