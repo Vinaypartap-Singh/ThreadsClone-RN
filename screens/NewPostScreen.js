@@ -77,6 +77,7 @@ export default function NewPostScreen() {
             threads: existingThreads,
             userProfile,
             userId: userId,
+            likes: 0,
           },
           { merge: true }
         );

@@ -182,7 +182,7 @@ export default function ProfileScreen() {
                 borderColor: "#a3a3a3",
                 paddingVertical: 10,
                 borderRadius: 10,
-                paddingHorizontal: 50,
+                paddingHorizontal: 30,
               }}
             >
               <Text>Edit Profile</Text>
@@ -193,7 +193,7 @@ export default function ProfileScreen() {
                 borderColor: "#a3a3a3",
                 paddingVertical: 10,
                 borderRadius: 10,
-                paddingHorizontal: 50,
+                paddingHorizontal: 30,
               }}
             >
               <Text>Share Profile</Text>

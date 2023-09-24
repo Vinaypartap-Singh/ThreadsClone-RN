@@ -17,8 +17,6 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 export default function HomePost() {
-  useEffect(() => {}, []);
-
   return (
     <View style={{ marginVertical: 20, marginHorizontal: 10, height: "auto" }}>
       <View
@@ -85,7 +83,7 @@ export default function HomePost() {
             </View>
           </View>
         </View>
-        <View style={{ paddingHorizontal: 10, width: "70%", marginLeft: 10 }}>
+        <View style={{ paddingHorizontal: 10, width: "80%", marginLeft: 10 }}>
           <View
             style={{
               flexDirection: "row",
@@ -112,7 +110,7 @@ export default function HomePost() {
               paddingVertical: 10,
             }}
           >
-            <Text style={{ fontWeight: "500", width: 300, lineHeight: 23 }}>
+            <Text style={{ fontWeight: "500", lineHeight: 23 }}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
               praesentium velit in perspiciatis, quos quis tempora architecto
               consequuntur veritatis quasi autem omnis harum corporis quisquam
