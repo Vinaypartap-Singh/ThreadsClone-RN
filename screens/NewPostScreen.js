@@ -13,12 +13,13 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { themeColor } from "../theme/themeColors";
+import { useNavigation } from "@react-navigation/native";
 
 export default function NewPostScreen() {
+  const navigation = useNavigation();
   const userId = auth.currentUser.uid;
   const [userProfile, setUserProfile] = useState(null);
   const [thread, setThread] = useState("");
-  console.log(thread);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -115,6 +116,7 @@ export default function NewPostScreen() {
         );
 
         setThread("");
+        navigation.navigate("Home");
       } catch (error) {
         console.error("Error posting thread:", error);
       }
@@ -168,6 +170,7 @@ export default function NewPostScreen() {
                   </View>
 
                   <TextInput
+                    style={{ marginTop: 8 }}
                     placeholder="Start a thread..."
                     autoCorrect={false}
                     placeholderTextColor={"#a3a3a3"}
