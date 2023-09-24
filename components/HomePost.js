@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { EllipsisHorizontalIcon } from "react-native-heroicons/solid";
 import {
   HeartIcon,
@@ -17,6 +17,8 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 export default function HomePost() {
+  useEffect(() => {}, []);
+
   return (
     <View style={{ marginVertical: 20, marginHorizontal: 10, height: "auto" }}>
       <View

@@ -150,11 +150,11 @@ export default function ProfileInformation() {
                     <Image
                       source={{ uri: data.url }}
                       style={{
-                        width: 60,
-                        height: 60,
                         objectFit: "cover",
                         borderRadius: 50,
                       }}
+                      width={60}
+                      height={60}
                     />
                   </TouchableOpacity>
                 );

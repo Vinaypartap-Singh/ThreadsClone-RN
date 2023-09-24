@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   KeyboardAvoidingView,
   StyleSheet,
@@ -7,61 +9,197 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { auth, db } from "../firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { themeColor } from "../theme/themeColors";
 
 export default function NewPostScreen() {
+  const userId = auth.currentUser.uid;
+  const [userProfile, setUserProfile] = useState(null);
+  const [thread, setThread] = useState("");
+  console.log(thread);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const docRef = doc(db, "users", `${userId}`);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setUserProfile(docSnap.data());
+      }
+    };
+
+    getUserInfo();
+  }, []);
+
+  const postThread = async () => {
+    if (thread === "") {
+      Alert.alert(
+        "Invalid Details",
+        "Please add the thread properly and then click on post",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            style: "default",
+          },
+        ],
+        { cancelable: true }
+      );
+    } else {
+      try {
+        Alert.alert("Posting", "We are posting your thread. Please Wait", [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Ok",
+            style: "default",
+          },
+        ]);
+
+        // Fetch data from firebase to check wheather some posts exist already or not
+
+        const docRef = doc(db, "posts", `${userProfile.accountId}`);
+        const docSnap = await getDoc(docRef);
+        const existingThreads = docSnap.data()?.threads || [];
+
+        existingThreads.push(thread);
+
+        await setDoc(
+          docRef,
+          {
+            threads: existingThreads,
+            userProfile,
+            userId: userId,
+          },
+          { merge: true }
+        );
+
+        // Add Data to Second Document Reference
+
+        const docRef2 = doc(db, "users", `${userId}`);
+        const docSnap2 = await getDoc(docRef2);
+        const existingThreads2 = docSnap2.data()?.threads || [];
+        existingThreads2.push(thread);
+
+        await setDoc(
+          docRef2,
+          {
+            threads: existingThreads2,
+            userId: userId,
+          },
+          { merge: true }
+        );
+
+        Alert.alert(
+          "Post Success",
+          "Your Post has been published successfully",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Ok",
+              style: "default",
+            },
+          ],
+          { cancelable: true }
+        );
+
+        setThread("");
+      } catch (error) {
+        console.error("Error posting thread:", error);
+      }
+    }
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
-      <KeyboardAvoidingView>
-        <View
-          style={{
-            justifyContent: "space-between",
-            height: "100%",
-          }}
-        >
-          <View>
-            <Text style={{ fontSize: 22, fontWeight: 600 }}>New Thread</Text>
-            <View style={{ marginTop: 20, flexDirection: "row", gap: 10 }}>
-              <Image
-                source={{
-                  uri: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3560&q=80",
-                }}
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 100,
-                  objectFit: "cover",
-                }}
-              />
-              <View style={{ gap: 5 }}>
-                <Text style={{ fontSize: 18, fontWeight: 600 }}>
-                  vinay_._sandhu
-                </Text>
-                <TextInput
-                  placeholder="Start a thread..."
-                  placeholderTextColor={"#a3a3a3"}
-                />
-              </View>
-            </View>
-          </View>
+      {userProfile ? (
+        <KeyboardAvoidingView>
           <View
             style={{
-              flexDirection: "row",
               justifyContent: "space-between",
-              paddingVertical: 20,
+              height: "100%",
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: 400 }}>
-              Your followers can reply
-            </Text>
-            <TouchableOpacity>
-              <Text style={{ color: "blue", fontSize: 16, fontWeight: 600 }}>
-                Post
+            <View>
+              <Text style={{ fontSize: 22, fontWeight: 600 }}>New Thread</Text>
+              <View style={{ marginTop: 20, flexDirection: "row", gap: 10 }}>
+                <Image
+                  source={{
+                    uri: userProfile.profileImage,
+                  }}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 100,
+                    objectFit: "cover",
+                  }}
+                />
+                <View style={{ gap: 5 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 10,
+                    }}
+                  >
+                    <Text style={{ fontSize: 18, fontWeight: 600 }}>
+                      {userProfile.username}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: "lightgray",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {userProfile.accountId}
+                    </Text>
+                  </View>
+
+                  <TextInput
+                    placeholder="Start a thread..."
+                    autoCorrect={false}
+                    placeholderTextColor={"#a3a3a3"}
+                    onChangeText={(text) => setThread(text)}
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingVertical: 20,
+              }}
+            >
+              <Text style={{ fontSize: 16, fontWeight: 400 }}>
+                Your followers can reply
               </Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={postThread}>
+                <Text style={{ color: "blue", fontSize: 16, fontWeight: 600 }}>
+                  Post
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
+        </KeyboardAvoidingView>
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size={"large"} color={themeColor.primaryColor} />
         </View>
-      </KeyboardAvoidingView>
+      )}
     </View>
   );
 }
