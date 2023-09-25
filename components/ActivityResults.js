@@ -66,13 +66,11 @@ export default function ActivityResults() {
                 paddingVertical: 10,
                 paddingHorizontal: 30,
                 marginRight: 10,
-                backgroundColor: "black",
               }}
             >
               <Text
                 style={{
                   textAlign: "center",
-                  color: "white",
                   fontWeight: "600",
                 }}
               >

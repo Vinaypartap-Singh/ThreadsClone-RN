@@ -10,8 +10,10 @@ import { HeartIcon as HeartSolid } from "react-native-heroicons/solid";
 import { AntDesign } from "@expo/vector-icons";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileThreadCard({ data }) {
+  const navigation = useNavigation();
   const likedData = data.likedPost;
   const [likedPost, setLikedPost] = useState();
   const [userData, setUserData] = useState(null);
@@ -108,6 +110,31 @@ export default function ProfileThreadCard({ data }) {
               </View>
             );
           })}
+
+          <View style={{ marginTop: 20, marginBottom: 50 }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Post")}
+              style={{
+                borderWidth: 1,
+                borderColor: "#ededed",
+                borderRadius: 10,
+                paddingVertical: 10,
+                paddingHorizontal: 30,
+                marginRight: 10,
+                backgroundColor: "black",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontWeight: "600",
+                }}
+              >
+                Post New Thread
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <View>
