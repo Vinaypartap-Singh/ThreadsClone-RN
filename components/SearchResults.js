@@ -99,7 +99,9 @@ export default function SearchResults({ data, searchInput, setSearchInput }) {
             {data.username}
           </Text>
           <Text style={{ fontWeight: "500" }}>
-            {data.followers?.length > 0 ? "followerd" : "0 followers"}
+            {data.followers?.length > 0
+              ? `${data.followers?.length - 1} follower(s)`
+              : "0 followers"}
           </Text>
         </View>
         <TouchableOpacity

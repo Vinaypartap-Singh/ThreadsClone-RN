@@ -26,7 +26,6 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const currentUser = auth.currentUser.uid;
   const [profileData, setProfileData] = useState(null);
-  console.log(profileData?.threads);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -64,7 +63,7 @@ export default function ProfileScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}>
       {profileData ? (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View
             style={{
               flexDirection: "row",
@@ -152,9 +151,13 @@ export default function ProfileScreen() {
                   />
                 </View>
                 <View>
-                  <Text style={{ fontWeight: 500 }}>
-                    {profileData.followers.length - 1} Following
-                  </Text>
+                  {profileData.followers?.length > 0 ? (
+                    <Text style={{ fontWeight: 500 }}>
+                      {profileData.followers?.length - 1} Following
+                    </Text>
+                  ) : (
+                    <Text style={{ fontWeight: 500 }}>0 Following</Text>
+                  )}
                 </View>
               </View>
             </View>
