@@ -9,26 +9,12 @@ import React, { useState } from "react";
 import ActivityResults from "../components/ActivityResults";
 
 export default function ActivityScreen() {
-  const [selectedActivity, setSelectedActivity] = useState("All");
+  const [selectedActivity, setSelectedActivity] =
+    useState("Thoughts you Liked");
 
   const activites = [
     {
-      name: "All",
-    },
-    {
-      name: "Requests",
-    },
-    {
-      name: "Replies",
-    },
-    {
-      name: "Mentions",
-    },
-    {
-      name: "Quotes",
-    },
-    {
-      name: "Reposts",
+      name: "Thoughts you Liked",
     },
   ];
 
@@ -41,7 +27,7 @@ export default function ActivityScreen() {
       }}
     >
       <View style={{ marginTop: 20 }}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View horizontal showsHorizontalScrollIndicator={false}>
           {activites.map((data, index) => {
             const isSelected = data.name === selectedActivity;
             return (
@@ -55,12 +41,14 @@ export default function ActivityScreen() {
                   borderRadius: 10,
                   backgroundColor: isSelected ? "black" : "white",
                   marginRight: 10,
+                  width: "100%",
                 }}
               >
                 <Text
                   style={{
                     color: isSelected ? "white" : "black",
                     fontWeight: isSelected ? "bold" : "500",
+                    textAlign: "center",
                   }}
                 >
                   {data.name}
@@ -68,13 +56,7 @@ export default function ActivityScreen() {
               </TouchableOpacity>
             );
           })}
-        </ScrollView>
-        <ActivityResults />
-        <ActivityResults />
-        <ActivityResults />
-        <ActivityResults />
-        <ActivityResults />
-        <ActivityResults />
+        </View>
         <ActivityResults />
       </View>
     </ScrollView>

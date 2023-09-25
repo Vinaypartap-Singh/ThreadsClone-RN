@@ -1,45 +1,64 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { themeColor } from "../theme/themeColors";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ActivityResults() {
+  const navigation = useNavigation();
+  const currentUser = auth.currentUser.uid;
+  const [likedThread, setLikedThreads] = useState(null);
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      const docRef = doc(db, "users", `${currentUser}`);
+
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const profileInformation = docSnap.data();
+        setLikedThreads(profileInformation.likedPost);
+      }
+    };
+
+    getProfileData();
+  }, []);
+
   return (
     <View style={{ marginTop: 35 }}>
-      <View style={{ flexDirection: "row", gap: 10 }}>
-        <View>
-          <Image
-            source={{
-              uri: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3560&q=80",
-            }}
-            style={{
-              width: 70,
-              height: 70,
-              objectFit: "cover",
-              borderRadius: 100,
-            }}
-          />
-        </View>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            paddingBottom: 14,
-            borderColor: "#ededed",
-            flexDirection: "row",
-            alignItems: "center",
-            // backgroundColor: "red",
-            width: "80%",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={{ gap: 3 }}>
-            <Text style={{ fontWeight: 600 }}>
-              mohanlal <Text style={{ color: "#a3a3a3" }}>15h</Text>
-            </Text>
-            <Text style={{ fontWeight: 500, color: "#a3a3a3" }}>
-              Followed you
-            </Text>
-          </View>
+      {likedThread ? (
+        <View style={{ flexDirection: "column", gap: 20 }}>
+          {likedThread.map((thread, index) => {
+            return (
+              <View key={index} style={{ flexDirection: "row", gap: 10 }}>
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    paddingBottom: 14,
+                    borderColor: "#ededed",
+                    width: "100%",
+                  }}
+                >
+                  <View>
+                    <Text style={{ fontWeight: 600, lineHeight: 30 }}>
+                      {thread}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            );
+          })}
           <View>
             <TouchableOpacity
+              onPress={() => navigation.navigate("Home")}
               style={{
                 borderWidth: 1,
                 borderColor: "#ededed",
@@ -47,13 +66,34 @@ export default function ActivityResults() {
                 paddingVertical: 10,
                 paddingHorizontal: 30,
                 marginRight: 10,
+                backgroundColor: "black",
               }}
             >
-              <Text style={{ textAlign: "center" }}>Follow</Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontWeight: "600",
+                }}
+              >
+                View More
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "white",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 200,
+          }}
+        >
+          <ActivityIndicator size={"large"} color={themeColor.primaryColor} />
+        </View>
+      )}
     </View>
   );
 }
