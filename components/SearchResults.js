@@ -1,12 +1,19 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
+import { auth } from "../firebase";
 
 export default function SearchResults({ data, searchInput, setSearchInput }) {
+  const currentUser = auth.currentUser.uid;
+
   const isSearchMatch =
     data.accountId.toLowerCase().includes(searchInput.toLowerCase()) ||
     data.username.toLowerCase().includes(searchInput.toLowerCase());
 
   if (!isSearchMatch) {
+    return null;
+  }
+
+  if (data?.id === currentUser) {
     return null;
   }
 
