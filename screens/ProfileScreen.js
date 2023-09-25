@@ -149,9 +149,11 @@ export default function ProfileScreen() {
                     }}
                   />
                 </View>
-                <Text style={{ fontWeight: 500 }}>
-                  {profileData.followers} followers
-                </Text>
+                <View>
+                  <Text style={{ fontWeight: 500 }}>
+                    {profileData.followers.length - 1} Following
+                  </Text>
+                </View>
               </View>
             </View>
             <View>

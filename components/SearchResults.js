@@ -1,9 +1,63 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { auth } from "../firebase";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { auth, db } from "../firebase";
+import { arrayUnion, doc, updateDoc, getDoc } from "firebase/firestore";
 
 export default function SearchResults({ data, searchInput, setSearchInput }) {
   const currentUser = auth.currentUser.uid;
+  const [followUserCurrent, setFollowUserCurrent] = useState(false);
+
+  useEffect(() => {
+    // Check if the current user is already following this user
+    async function checkFollowingStatus() {
+      try {
+        const userRef = doc(db, "users", currentUser);
+        const userDoc = await getDoc(userRef);
+        const userFollowers = userDoc.data()?.followers || [];
+
+        if (userFollowers.includes(data.id)) {
+          // If the user is already following, setFollowUserCurrent to true
+          setFollowUserCurrent(true);
+        }
+      } catch (error) {
+        console.error("Error checking following status:", error);
+      }
+    }
+
+    checkFollowingStatus();
+  }, [data.id, currentUser]);
+
+  const followUser = async (userdata) => {
+    try {
+      const userRef = doc(db, "users", currentUser);
+
+      // Update the Firestore document to add the liked post using arrayUnion
+      await updateDoc(userRef, {
+        followers: arrayUnion(userdata.id),
+      });
+
+      // Update the local state to reflect the new follow status
+      setFollowUserCurrent(true);
+
+      Alert.alert(
+        "Followed",
+        `You have started following ${userdata.username}`,
+        [
+          {
+            text: "Ok",
+            style: "default",
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ],
+        { cancelable: true }
+      );
+    } catch (error) {
+      console.error("Error following user:", error);
+    }
+  };
 
   const isSearchMatch =
     data.accountId.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -13,7 +67,7 @@ export default function SearchResults({ data, searchInput, setSearchInput }) {
     return null;
   }
 
-  if (data?.id === currentUser) {
+  if (data.id === currentUser) {
     return null;
   }
 
@@ -55,8 +109,11 @@ export default function SearchResults({ data, searchInput, setSearchInput }) {
             paddingHorizontal: 30,
             marginRight: 10,
           }}
+          onPress={() => followUser(data)}
         >
-          <Text style={{ textAlign: "center" }}>Follow</Text>
+          <Text style={{ textAlign: "center" }}>
+            {followUserCurrent ? "Following" : "Follow"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
