@@ -93,12 +93,14 @@ export default function SearchResults({ data, searchInput, setSearchInput }) {
           justifyContent: "space-between",
         }}
       >
-        <View style={{ gap: 3 }}>
+        <View style={{ gap: 8 }}>
           <Text style={{ fontWeight: "600" }}>{data.accountId}</Text>
           <Text style={{ fontWeight: "500", color: "#a3a3a3" }}>
             {data.username}
           </Text>
-          <Text style={{ fontWeight: "500" }}>{data.followers} followers</Text>
+          <Text style={{ fontWeight: "500" }}>
+            {data.followers?.length > 0 ? "followerd" : "0 followers"}
+          </Text>
         </View>
         <TouchableOpacity
           style={{
