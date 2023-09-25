@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { EllipsisHorizontalIcon } from "react-native-heroicons/solid";
 import {
   HeartIcon,
@@ -14,10 +14,61 @@ import {
   PaperAirplaneIcon,
   ShareIcon,
 } from "react-native-heroicons/outline";
+import { HeartIcon as HeartSolid } from "react-native-heroicons/solid";
 import { AntDesign } from "@expo/vector-icons";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 export default function HomePost({ data }) {
+  const userId = auth.currentUser.uid;
+  const [likedPost, setLikedPost] = useState();
   const profileInfo = data.userProfile;
+  const [userData, setUserData] = useState(null);
+
+  const likePost = async (post) => {
+    try {
+      const postRef = doc(db, "users", `${userId}`);
+
+      // Update the Firestore document to add the liked post using arrayUnion
+      await updateDoc(postRef, {
+        likedPost: arrayUnion(post),
+      });
+
+      // Update the local state to reflect the new like status
+      setLikedPost(post);
+
+      const getProfileData = async () => {
+        const docRef = doc(db, "users", `${userId}`);
+
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const profileInformation = docSnap.data();
+          setUserData(profileInformation);
+        }
+      };
+
+      getProfileData();
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      const docRef = doc(db, "users", `${userId}`);
+
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const profileInformation = docSnap.data();
+        setUserData(profileInformation);
+      }
+    };
+
+    getProfileData();
+  }, []);
+
   return (
     <>
       {data?.threads ? (
@@ -29,7 +80,7 @@ export default function HomePost({ data }) {
             gap: 50,
           }}
         >
-          {data.threads.map((data, index) => {
+          {data?.threads.map((data, index) => {
             return (
               <View
                 key={index}
@@ -150,9 +201,16 @@ export default function HomePost({ data }) {
                   <View
                     style={{ marginTop: 10, flexDirection: "row", gap: 20 }}
                   >
-                    <TouchableOpacity>
-                      <HeartIcon color={"black"} />
-                    </TouchableOpacity>
+                    {userData?.likedPost.includes(data) ? (
+                      <TouchableOpacity>
+                        <HeartSolid color={"red"} />
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={() => likePost(data)}>
+                        <HeartIcon color={"black"} />
+                      </TouchableOpacity>
+                    )}
+
                     <TouchableOpacity>
                       <ChatBubbleOvalLeftIcon color={"black"} />
                     </TouchableOpacity>
