@@ -19,12 +19,14 @@ import { auth, db } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc } from "firebase/firestore";
 import { themeColor } from "../theme/themeColors";
+import ProfileThreadCard from "../components/ProfileThreadCard";
+import HomePost from "../components/HomePost";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const currentUser = auth.currentUser.uid;
   const [profileData, setProfileData] = useState(null);
-  console.log(profileData);
+  console.log(profileData?.threads);
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -170,6 +172,7 @@ export default function ProfileScreen() {
               />
             </View>
           </View>
+          {/* Buttons */}
           <View
             style={{
               marginTop: 15,
@@ -200,6 +203,22 @@ export default function ProfileScreen() {
             >
               <Text>Share Profile</Text>
             </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 20, alignItems: "flex-start" }}>
+            <TouchableOpacity
+              style={{
+                borderBottomWidth: 2,
+                paddingHorizontal: 30,
+                paddingBottom: 10,
+              }}
+            >
+              <Text style={{ fontWeight: 500, fontSize: 16 }}>Threads</Text>
+            </TouchableOpacity>
+          </View>
+          {/* Show Threads */}
+          <View style={{ marginTop: 20 }}>
+            <ProfileThreadCard data={profileData} />
+            {/* <HomePost data={profileData} /> */}
           </View>
         </ScrollView>
       ) : (
