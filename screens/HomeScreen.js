@@ -50,7 +50,12 @@ export default function HomeScreen() {
         </ScrollView>
       ) : (
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "white",
+          }}
         >
           <ActivityIndicator size={"large"} color={themeColor.primaryColor} />
         </View>

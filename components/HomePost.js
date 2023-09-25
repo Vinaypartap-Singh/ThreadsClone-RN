@@ -201,7 +201,7 @@ export default function HomePost({ data }) {
                   <View
                     style={{ marginTop: 10, flexDirection: "row", gap: 20 }}
                   >
-                    {userData?.likedPost.includes(data) ? (
+                    {userData?.likedPost?.includes(data) ? (
                       <TouchableOpacity>
                         <HeartSolid color={"red"} />
                       </TouchableOpacity>
